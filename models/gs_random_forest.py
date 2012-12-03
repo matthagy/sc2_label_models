@@ -39,17 +39,15 @@ plt.show()
 
 plt.figure(3)
 plt.clf()
-cannot_classify = Ypp < 0.95
 
 n = 0.01 * float(len(Yp))
-correct = sum(Ye[~cannot_classify] == Yp[~cannot_classify]) / n
-incorrect = sum(Ye[~cannot_classify] != Yp[~cannot_classify]) / n
-not_classified = sum(cannot_classify) / n
-x = [0,1,2]
-plt.bar(np.array(x) + 0.1, [correct, incorrect, not_classified],
-        color=['g', 'r', 'b'])
+correct = sum(Ye == Yp) / n
+incorrect = sum(Ye != Yp) / n
+x = [0,1]
+plt.bar(np.array(x) + 0.1, [correct, incorrect],
+        color=['g', 'r'])
 plt.gca().set_xticks(np.array(x) + 0.5)
-plt.gca().set_xticklabels(['correct', 'incorrect', 'not classified'],
+plt.gca().set_xticklabels(['correct', 'incorrect'],
                           rotation=0)
 plt.ylabel('Percentage')
 plt.title('Random Forest Classification of Tab Labels')
@@ -60,9 +58,10 @@ for xi,yi in zip(x, [correct, incorrect, not_classified]):
             horizontalalignment='center',
             verticalalignment='bottom')
 
+plt.ylim(0, 115)
 plt.draw()
 plt.show()
-plt.savefig('random_forest.png')
+plt.savefig('gs_random_forest.png')
 
-with open('random_forest.p', 'w') as fp:
+with open('gs_random_forest.p', 'w') as fp:
     pickle.dump(rf, fp, pickle.HIGHEST_PROTOCOL)
